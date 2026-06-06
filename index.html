@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Little Guys Motors — Quality Used Cars</title>
+<meta name="description" content="Little Guys Motors — a friendly local used-car dealership. Hand-picked, inspected vehicles at honest prices. Browse our cars, book a service, or sell us yours." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#101113; --ink2:#1b1d21; --muted:#6b7280; --text:#191b1f;
+    --line:#e7e7ea; --soft:#f6f6f7; --white:#fff;
+    --accent:#ff5a1f; --accent2:#e2470f;
+    --radius:14px; --shadow:0 8px 26px rgba(16,17,19,.10); --shadow-lg:0 22px 55px rgba(16,17,19,.22);
+    --maxw:1160px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+    color:var(--text);background:var(--white);line-height:1.55;-webkit-font-smoothing:antialiased}
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+  section{scroll-margin-top:72px}
+  h1,h2,h3{letter-spacing:-.02em;line-height:1.12}
+
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:.95rem;cursor:pointer;
+    padding:.8rem 1.35rem;border-radius:10px;border:1px solid transparent;white-space:nowrap;
+    transition:transform .14s,background .14s,color .14s,border-color .14s}
+  .btn:active{transform:translateY(1px)}
+  .btn-accent{background:var(--accent);color:#fff}
+  .btn-accent:hover{background:var(--accent2)}
+  .btn-dark{background:var(--ink);color:#fff}
+  .btn-dark:hover{background:#000}
+  .btn-light{background:#fff;color:var(--ink);border-color:#fff}
+  .btn-light:hover{background:#f1f1f1}
+  .btn-outline{background:transparent;color:var(--ink);border-color:var(--line)}
+  .btn-outline:hover{border-color:var(--ink)}
+  .btn-ghost{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.4)}
+  .btn-ghost:hover{background:rgba(255,255,255,.22)}
+
+  /* Header */
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{display:flex;align-items:center;gap:.55rem;font-weight:800;font-size:1.1rem;color:var(--ink)}
+  .brand .logo{width:36px;height:36px;border-radius:9px;background:var(--ink);display:grid;place-items:center;flex:0 0 auto}
+  .brand small{display:block;font-size:.62rem;font-weight:600;letter-spacing:.14em;color:var(--accent);text-transform:uppercase}
+  .nav-links{display:flex;align-items:center;gap:1.5rem}
+  .nav-links a{font-weight:600;font-size:.94rem;color:#33363b}
+  .nav-links a:hover{color:var(--accent)}
+  .nav-right{display:flex;align-items:center;gap:.8rem}
+  .nav-phone{font-weight:700;color:var(--ink)}
+  .menu-btn{display:none;background:none;border:0;cursor:pointer;width:42px;height:42px}
+  .menu-btn span{display:block;height:2px;width:22px;background:var(--ink);margin:5px auto;border-radius:2px}
+
+  /* Hero */
+  .hero{position:relative;min-height:80vh;display:flex;align-items:center;background:#000;color:#fff;overflow:hidden}
+  .hero .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center right;opacity:.82}
+  .hero::after{content:'';position:absolute;inset:0;
+    background:linear-gradient(90deg,rgba(7,8,9,.92) 0%,rgba(7,8,9,.66) 42%,rgba(7,8,9,.15) 75%,rgba(7,8,9,.35) 100%)}
+  .hero .wrap{position:relative;z-index:2;width:100%}
+  .hero .inner{max-width:600px;padding:70px 0}
+  .hero .pin{display:inline-flex;align-items:center;gap:.45rem;font-size:.82rem;font-weight:600;color:#ffd7c6;margin-bottom:16px}
+  .hero h1{font-size:clamp(2.3rem,5.2vw,3.7rem);font-weight:800;margin-bottom:16px}
+  .hero h1 .o{color:var(--accent)}
+  .hero p{font-size:1.1rem;color:#d6d8db;max-width:42ch;margin-bottom:26px}
+  .hero-actions{display:flex;gap:.7rem;flex-wrap:wrap}
+  .hero-feat{position:absolute;right:24px;bottom:22px;z-index:2;background:rgba(10,11,12,.6);
+    border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:10px 14px;backdrop-filter:blur(6px)}
+  .hero-feat .t{font-size:.72rem;color:#b9bdc2;text-transform:uppercase;letter-spacing:.1em}
+  .hero-feat .v{font-weight:700}
+
+  /* Value strip */
+  .vals{background:var(--ink);color:#dfe1e4}
+  .vals .row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px 0}
+  .vals .v{display:flex;align-items:center;gap:.6rem;justify-content:center;font-weight:600;font-size:.94rem}
+  .vals .v b{color:#fff}
+  .vals .v .i{color:var(--accent)}
+
+  /* Section shell */
+  .sec{padding:72px 0}
+  .sec.alt{background:var(--soft)}
+  .sec-head{margin-bottom:30px}
+  .sec-head h2{font-size:clamp(1.7rem,3.4vw,2.3rem);font-weight:800}
+  .sec-head p{color:var(--muted);font-size:1.05rem;margin-top:8px;max-width:60ch}
+  .sec-head.center{text-align:center}
+  .sec-head.center p{margin-left:auto;margin-right:auto}
+
+  /* Cars */
+  .cars{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:22px}
+  .car{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;transition:transform .16s,box-shadow .16s}
+  .car:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+  .car .ph{position:relative;aspect-ratio:16/10;background:#ececed}
+  .car .ph img{width:100%;height:100%;object-fit:cover}
+  .car .ph .feat{position:absolute;top:10px;left:10px;background:var(--accent);color:#fff;
+    font-size:.72rem;font-weight:700;padding:.28rem .6rem;border-radius:7px}
+  .car .ph .yr{position:absolute;top:10px;right:10px;background:rgba(10,11,12,.62);color:#fff;
+    font-size:.74rem;font-weight:600;padding:.28rem .55rem;border-radius:7px;backdrop-filter:blur(4px)}
+  .car .bd{padding:15px 16px 17px;display:flex;flex-direction:column;gap:11px;flex:1}
+  .car h3{font-size:1.08rem}
+  .car .pr{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .car .pr .p{font-size:1.32rem;font-weight:800;color:var(--ink)}
+  .car .pr .mo{font-size:.78rem;color:var(--muted);font-weight:600}
+  .car .sp{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);padding:11px 0}
+  .car .sp div{text-align:center}
+  .car .sp .n{font-weight:700;font-size:.86rem}
+  .car .sp .l{font-size:.68rem;color:var(--muted)}
+  .car .ax{display:flex;gap:.5rem;margin-top:auto}
+  .car .ax .btn{flex:1;justify-content:center;padding:.62rem .6rem;font-size:.86rem}
+
+  /* Estimator */
+  .est{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center;
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--shadow)}
+  .est .lead h3{font-size:1.4rem;margin-bottom:10px}
+  .est .lead p{color:var(--muted);margin-bottom:14px}
+  .disc{background:#fff6f2;border:1px solid #ffd9c9;color:#a23b14;border-radius:11px;
+    padding:12px 14px;font-size:.86rem;font-weight:600}
+  .est .calc .field{margin-bottom:15px}
+  .est .calc label{font-size:.82rem;font-weight:600;color:#44474c;display:flex;justify-content:space-between;margin-bottom:6px}
+  .est .calc label b{color:var(--ink)}
+  .est .calc input[type=range]{width:100%;accent-color:var(--accent)}
+  .est .out{display:flex;align-items:baseline;gap:.5rem;background:var(--ink);color:#fff;border-radius:12px;
+    padding:16px 18px;margin-top:4px}
+  .est .out .big{font-size:2rem;font-weight:800}
+  .est .out .sm{color:#b9bdc2;font-size:.85rem}
+  .est .out .apr{margin-left:auto;text-align:right;font-size:.8rem;color:#b9bdc2}
+  .est .out .apr b{display:block;color:var(--accent);font-size:1.1rem}
+
+  /* Services */
+  .svc{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:26px}
+  .svc-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;
+    box-shadow:var(--shadow);display:flex;flex-direction:column;gap:7px}
+  .svc-card .i{font-size:1.5rem;width:50px;height:50px;border-radius:12px;background:var(--soft);display:grid;place-items:center;margin-bottom:6px}
+  .svc-card h3{font-size:1.08rem}
+  .svc-card p{color:var(--muted);font-size:.93rem;flex:1}
+  .svc-card .f{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:12px;margin-top:6px}
+  .svc-card .pr{font-weight:700;font-size:.9rem}
+  .svc-card .bk{color:var(--accent);font-weight:700;font-size:.88rem;cursor:pointer}
+  .svc-card .bk:hover{text-decoration:underline}
+  .conc{display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center;background:var(--ink);
+    color:#fff;border-radius:18px;padding:36px;box-shadow:var(--shadow-lg)}
+  .conc .tag{display:inline-block;background:rgba(255,90,31,.18);border:1px solid rgba(255,90,31,.4);
+    color:#ffd0bd;font-size:.78rem;font-weight:700;padding:.32rem .7rem;border-radius:999px;margin-bottom:12px}
+  .conc h3{font-size:clamp(1.4rem,2.8vw,1.9rem);margin-bottom:10px}
+  .conc p{color:#c4c7cb;margin-bottom:16px;max-width:50ch}
+  .conc ol{list-style:none;display:grid;gap:9px;margin-bottom:20px}
+  .conc ol li{color:#dde0e3;font-size:.95rem;display:flex;gap:.6rem}
+  .conc ol b{color:var(--accent)}
+  .conc-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:22px;text-align:center}
+  .conc-card .rt{display:flex;align-items:center;justify-content:center;gap:10px;font-size:1.5rem;margin:6px 0}
+  .conc-card .rt .ln{flex:1;height:2px;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 12px)}
+  .conc-card .cap{font-size:.84rem;color:#b9bdc2;margin-top:8px}
+
+  /* Sell your car */
+  .sell{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start}
+  .sell .copy h2{font-size:clamp(1.7rem,3.4vw,2.3rem);font-weight:800;margin-bottom:12px}
+  .sell .copy p{color:var(--muted);margin-bottom:16px}
+  .sell .copy ul{list-style:none;display:grid;gap:10px}
+  .sell .copy ul li{display:flex;gap:.6rem;align-items:flex-start}
+  .sell .copy ul .i{color:var(--accent);font-weight:800}
+
+  /* Forms */
+  .formcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow)}
+  .formcard h3{font-size:1.2rem;margin-bottom:4px}
+  .formcard .s{color:var(--muted);font-size:.9rem;margin-bottom:16px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .fg{margin-bottom:12px}
+  .fg label{font-size:.8rem;font-weight:600;display:block;margin-bottom:5px}
+  .fg input,.fg select,.fg textarea{width:100%;border:1px solid var(--line);border-radius:10px;
+    padding:.72rem .8rem;font:inherit;font-size:.93rem;background:#fbfbfc}
+  .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(255,90,31,.14);background:#fff}
+  .fg textarea{resize:vertical;min-height:84px}
+  .ok{display:none;background:#eafaf0;border:1px solid #b5e7c6;color:#177a3e;border-radius:10px;
+    padding:12px 14px;font-weight:600;font-size:.9rem;margin-bottom:14px}
+  .ok.show{display:block}
+  .note{font-size:.76rem;color:var(--muted);margin-top:9px}
+
+  /* Contact */
+  .contact-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:34px}
+  .info .anytime{font-size:1.05rem;font-weight:600;margin-bottom:18px}
+  .irow{display:flex;gap:.85rem;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line)}
+  .irow:last-child{border-bottom:0}
+  .irow .i{width:40px;height:40px;border-radius:10px;background:var(--soft);display:grid;place-items:center;flex:0 0 auto;font-size:1.1rem}
+  .irow .l{font-size:.76rem;color:var(--muted)}
+  .irow .v{font-weight:600}
+  .ph-note{color:var(--accent2)}
+  .map{margin-top:16px;border-radius:12px;height:160px;background:var(--ink);color:#aeb2b7;
+    display:grid;place-items:center;font-size:.86rem}
+
+  /* Footer */
+  footer{background:var(--ink);color:#aeb2b7;padding:46px 0 24px}
+  .foot{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:28px;margin-bottom:26px}
+  footer .brand{color:#fff;margin-bottom:12px}
+  footer .brand .logo{background:#fff}
+  footer p.ab{font-size:.9rem;color:#93969b;max-width:34ch}
+  footer h4{color:#fff;font-size:.92rem;margin-bottom:12px}
+  footer ul{list-style:none;display:grid;gap:8px}
+  footer ul a:hover{color:var(--accent)}
+  .fbar{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;display:flex;justify-content:space-between;
+    flex-wrap:wrap;gap:8px;font-size:.8rem;color:#7e8288}
+  .pl{color:#ff9a78}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;background:rgba(10,11,12,.66);backdrop-filter:blur(3px);z-index:100;
+    display:none;align-items:flex-start;justify-content:center;padding:34px 16px;overflow:auto}
+  .modal.open{display:flex}
+  .mcard{position:relative;background:#fff;border-radius:18px;max-width:900px;width:100%;overflow:hidden;
+    box-shadow:var(--shadow-lg);animation:pop .18s ease}
+  @keyframes pop{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+  .mclose{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;border-radius:10px;border:0;
+    background:rgba(255,255,255,.92);cursor:pointer;font-size:1.1rem;box-shadow:var(--shadow)}
+  .mimg{width:100%;aspect-ratio:16/9;object-fit:cover;background:#ececed}
+  .mbody{padding:22px 24px 24px}
+  .mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+  .mhead h2{font-size:1.45rem}
+  .mhead .sub{color:var(--muted);font-size:.92rem;margin-top:3px}
+  .mhead .price{font-size:1.6rem;font-weight:800;text-align:right}
+  .mhead .price small{display:block;font-size:.76rem;color:var(--muted);font-weight:600}
+  .mbadges{display:flex;gap:.5rem;flex-wrap:wrap;margin:13px 0 16px}
+  .mbadge{background:#eafaf0;color:#177a3e;border:1px solid #b5e7c6;border-radius:999px;padding:.28rem .7rem;font-size:.76rem;font-weight:700}
+  .mbadge.alt{background:#fff6f2;color:var(--accent2);border-color:#ffd9c9}
+  .mspecs{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;background:var(--soft);
+    border:1px solid var(--line);border-radius:12px;padding:15px;margin-bottom:16px}
+  .mspecs .n{font-weight:700;font-size:.92rem}
+  .mspecs .l{font-size:.7rem;color:var(--muted)}
+  .mdesc{font-size:.96rem;margin-bottom:15px}
+  .mfeat{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-bottom:18px}
+  .mfeat div{display:flex;gap:.45rem;font-size:.9rem}
+  .mfeat .ck{color:#1f9d55;font-weight:800}
+  .mcta{display:flex;gap:.6rem;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:16px}
+  .mcta .btn{flex:1;justify-content:center;min-width:150px}
+
+  /* Responsive */
+  @media(max-width:880px){
+    .nav-links,.nav-phone{display:none}
+    .menu-btn{display:block}
+    .nav-links.open{display:flex;position:absolute;top:64px;left:0;right:0;background:#fff;flex-direction:column;
+      align-items:flex-start;padding:16px 20px;gap:1rem;border-bottom:1px solid var(--line)}
+    .vals .row{grid-template-columns:1fr;gap:10px}
+    .est,.sell,.conc,.contact-grid{grid-template-columns:1fr;gap:24px}
+    .svc{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr 1fr}
+    .mspecs{grid-template-columns:repeat(2,1fr)}
+    .hero .inner{padding:54px 0}
+    .hero{min-height:74vh}
+    .hero-feat{display:none}
+  }
+  @media(max-width:560px){
+    .frow{grid-template-columns:1fr}
+    .foot{grid-template-columns:1fr}
+    .mfeat{grid-template-columns:1fr}
+    .mcta .btn{min-width:100%}
+    .car .ax{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <span class="logo" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5a3 3 0 0 1 2.8-2h8.4A3 3 0 0 1 19 8l2 5v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z" fill="#ff5a1f"/><circle cx="7" cy="15" r="1.3" fill="#fff"/><circle cx="17" cy="15" r="1.3" fill="#fff"/></svg>
+      </span>
+      <span>Little Guys Motors<small>Used Cars</small></span>
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#cars">Cars</a>
+      <a href="#services">Services</a>
+      <a href="#sell">Sell Your Car</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-right">
+      <a class="nav-phone" href="tel:+15550000000">(555) 000-0000</a>
+      <a class="btn btn-accent" href="#contact">Contact Us</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+<a id="top"></a>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="bg" src="images/gmc.jpg" alt="Black GMC Yukon XL Denali" />
+  <div class="wrap">
+    <div class="inner">
+      <span class="pin">📍 Your City, ST · Locally owned</span>
+      <h1>Big value from the <span class="o">little guys.</span></h1>
+      <p>Quality used cars, hand-picked and inspected, at honest prices. Come see what's on the lot — or let us bring the service to you.</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent" href="#cars">View Our Cars</a>
+        <a class="btn btn-ghost" href="#contact">Contact Us Anytime</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-feat">
+    <div class="t">Now featured</div>
+    <div class="v">2021 GMC Yukon XL Denali</div>
+  </div>
+</section>
+
+<!-- VALUE STRIP -->
+<div class="vals">
+  <div class="wrap row">
+    <div class="v"><span class="i">✓</span> <b>Every car inspected</b></div>
+    <div class="v"><span class="i">✓</span> <b>Fair, upfront pricing</b></div>
+    <div class="v"><span class="i">✓</span> <b>No-pressure, real people</b></div>
+  </div>
+</div>
+
+<!-- CARS -->
+<section class="sec" id="cars">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Cars for sale</h2>
+      <p>Here's what's on the lot right now. Every listing shows the full details up front — see one you like? Just hit “Request this car” and we'll hold it for you.</p>
+    </div>
+    <div class="cars" id="carGrid"></div>
+  </div>
+</section>
+
+<!-- ESTIMATOR -->
+<section class="sec alt">
+  <div class="wrap">
+    <div class="est">
+      <div class="lead">
+        <h3>Estimate a monthly payment</h3>
+        <p>Curious what a car might cost per month? Slide the numbers around for a rough idea.</p>
+        <div class="disc">⚠️ This is only an estimate based on the % you choose — <b>Little Guys Motors does not offer financing.</b> Arrange your own loan with your bank or credit union.</div>
+      </div>
+      <div class="calc">
+        <div class="field"><label>Vehicle price <b id="vpV">$15,000</b></label><input type="range" id="vp" min="3000" max="70000" step="500" value="15000" /></div>
+        <div class="field"><label>Down payment <b id="dpV">$1,500</b></label><input type="range" id="dp" min="0" max="25000" step="250" value="1500" /></div>
+        <div class="field"><label>Loan length <b id="tmV">60 months</b></label><input type="range" id="tm" min="12" max="72" step="12" value="60" /></div>
+        <div class="field"><label>Interest rate (APR) <b id="apV">8.0%</b></label><input type="range" id="ap" min="3" max="20" step="0.5" value="8" /></div>
+        <div class="out">
+          <div><div class="big" id="moOut">$0</div><div class="sm">estimated / month</div></div>
+          <div class="apr">at an assumed rate of<b id="aprOut">8.0% APR</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2>Service &amp; care</h2>
+      <p>Bought from us or not, our shop handles the essentials — and if you're busy, we'll come get the car and bring it back.</p>
+    </div>
+    <div class="svc">
+      <div class="svc-card">
+        <div class="i">🛢️</div><h3>Oil &amp; routine maintenance</h3>
+        <p>Oil &amp; filter changes, fluid top-offs, tune-ups, tire rotations, and multi-point inspections — quick and fairly priced.</p>
+        <div class="f"><span class="pr">Oil changes from $39</span><span class="bk" data-service="Oil change / routine maintenance">Book →</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="i">🔧</div><h3>Brakes, tires &amp; repairs</h3>
+        <p>Brake pads &amp; rotors, tires, batteries, belts &amp; hoses, check-engine diagnostics, and general repairs.</p>
+        <div class="f"><span class="pr">Free diagnostic quote</span><span class="bk" data-service="Brakes / tires / repair">Book →</span></div>
+      </div>
+      <div class="svc-card">
+        <div class="i">✨</div><h3>Detailing</h3>
+        <p>Interior deep-clean, exterior wash &amp; wax, and full showroom-style detailing inside and out.</p>
+        <div class="f"><span class="pr">Detailing from $89</span><span class="bk" data-service="Car detailing">Book →</span></div>
+      </div>
+    </div>
+
+    <div class="conc">
+      <div>
+        <span class="tag">★ Service from home</span>
+        <h3>We pick it up. We service it. We bring it back.</h3>
+        <p>No time to come in? We'll grab your car from your driveway, take it to our shop, and return it when it's done.</p>
+        <ol>
+          <li><b>1.</b> Book online and pick a pickup window</li>
+          <li><b>2.</b> Leave the keys somewhere safe, tell us where they are, or hand them to our driver</li>
+          <li><b>3.</b> We service your car and return it to your door</li>
+        </ol>
+        <a class="btn btn-accent" href="#contact" data-service="At-home pickup &amp; return service">Book At-Home Service →</a>
+      </div>
+      <div class="conc-card">
+        <div class="rt"><span>🏠</span><span class="ln"></span><span>🚗</span><span class="ln"></span><span>🔧</span></div>
+        <div style="font-weight:700">Driveway → shop → back</div>
+        <div class="rt"><span>🔧</span><span class="ln"></span><span>🚗</span><span class="ln"></span><span>🏠</span></div>
+        <div class="cap">Local pickup &amp; return — contactless if you prefer</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SELL YOUR CAR -->
+<section class="sec alt" id="sell">
+  <div class="wrap sell">
+    <div class="copy">
+      <h2>Want to sell your car?</h2>
+      <p>Tell us about it and pick a time that works — we'll meet you, take a quick look, and make a fair, no-obligation offer. Selling or trading, it's an easy conversation.</p>
+      <ul>
+        <li><span class="i">✓</span> A real appraisal from a real person</li>
+        <li><span class="i">✓</span> Meet at the lot or somewhere convenient</li>
+        <li><span class="i">✓</span> No pressure, no obligation to sell</li>
+      </ul>
+    </div>
+    <form class="formcard" id="sellForm" novalidate>
+      <h3>Schedule a meeting</h3>
+      <div class="s">Send your details and a time — we'll confirm by phone or email.</div>
+      <div class="ok" id="sellOk">✓ Thanks! We'll reach out to confirm your meeting. <em>(Demo only — not actually sent yet.)</em></div>
+      <div class="frow">
+        <div class="fg"><label>Your name</label><input name="name" placeholder="Jane Doe" required /></div>
+        <div class="fg"><label>Phone</label><input name="phone" placeholder="(555) 555-5555" /></div>
+      </div>
+      <div class="fg"><label>Your car (year, make, model)</label><input name="car" placeholder="2017 Honda Accord, ~80k miles" /></div>
+      <div class="frow">
+        <div class="fg"><label>Preferred date</label><input name="date" type="date" /></div>
+        <div class="fg"><label>Preferred time</label>
+          <select name="time"><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
+        </div>
+      </div>
+      <button class="btn btn-dark" type="submit" style="width:100%;justify-content:center">Request Meeting →</button>
+      <div class="note">No obligation. We'll only use your info to set up the appraisal.</div>
+    </form>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="sec-head"><h2>Get in touch</h2></div>
+    <div class="contact-grid">
+      <div class="info">
+        <div class="anytime">📞 Contact us anytime — call, text, or email. You'll always reach a real person.</div>
+        <div class="irow"><div class="i">📍</div><div><div class="l">Address</div><div class="v">123 Example Ave, Your City, ST 00000 <span class="ph-note">(placeholder)</span></div></div></div>
+        <div class="irow"><div class="i">📞</div><div><div class="l">Phone</div><div class="v"><a href="tel:+15550000000">(555) 000-0000</a> <span class="ph-note">(placeholder)</span></div></div></div>
+        <div class="irow"><div class="i">✉️</div><div><div class="l">Email</div><div class="v"><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a> <span class="ph-note">(confirm)</span></div></div></div>
+        <div class="irow"><div class="i">🕒</div><div><div class="l">Hours</div><div class="v">Mon–Sat: 9am – 7pm · Sun: By appointment</div></div></div>
+        <div class="map">📍 Google Map embed goes here</div>
+      </div>
+      <form class="formcard" id="leadForm" novalidate>
+        <h3>Send a message</h3>
+        <div class="s">Questions, requesting a car, or booking a service — drop us a line.</div>
+        <div class="ok" id="leadOk">✓ Thanks! Your message has been sent — we'll be in touch shortly. <em>(Demo only — not actually delivered yet.)</em></div>
+        <div class="frow">
+          <div class="fg"><label>Full name</label><input id="fn" name="name" placeholder="Jane Doe" required /></div>
+          <div class="fg"><label>Phone</label><input name="phone" placeholder="(555) 555-5555" /></div>
+        </div>
+        <div class="fg"><label>Email</label><input type="email" name="email" placeholder="you@email.com" required /></div>
+        <div class="fg"><label>Car of interest</label>
+          <select id="veh" name="vehicle"><option value="">— General question —</option></select>
+        </div>
+        <div class="fg"><label>Message</label><textarea id="msg" name="message" placeholder="I'd like to know if this car is still available…"></textarea></div>
+        <button class="btn btn-accent" type="submit" style="width:100%;justify-content:center">Send Message →</button>
+        <div class="note">We never sell your info. By submitting you agree to be contacted about your inquiry.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <a class="brand" href="#top">
+          <span class="logo" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5a3 3 0 0 1 2.8-2h8.4A3 3 0 0 1 19 8l2 5v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z" fill="#101113"/><circle cx="7" cy="15" r="1.3" fill="#fff"/><circle cx="17" cy="15" r="1.3" fill="#fff"/></svg></span>
+          <span>Little Guys Motors</span>
+        </a>
+        <p class="ab">Your friendly local used-car dealership. Quality vehicles, honest prices, and people who actually care.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#cars">Cars for sale</a></li>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#sell">Sell your car</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>123 Example Ave, Your City, ST</li>
+          <li><a href="tel:+15550000000">(555) 000-0000</a></li>
+          <li><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a></li>
+          <li>Mon–Sat 9am–7pm</li>
+        </ul>
+      </div>
+    </div>
+    <div class="fbar">
+      <div>© <span id="yr"></span> Little Guys Motors · Dealer Lic. #<span class="pl">000000 (placeholder)</span></div>
+      <div>Prices plus tax, title &amp; fees · Demo photos for layout</div>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal" id="carModal" aria-hidden="true">
+  <div class="mcard" role="dialog" aria-modal="true">
+    <button class="mclose" id="mClose" aria-label="Close">✕</button>
+    <div id="mContent"></div>
+  </div>
+</div>
+
+<script>
+  const CARS = [
+    { id:'gmc', img:'images/gmc.jpg', featured:true, year:2021, make:'GMC', model:'Yukon XL Denali',
+      body:'Full-Size SUV', price:54900, miles:'38,400', trans:'10-Speed Auto', drive:'4WD',
+      engine:'6.2L V8', fuel:'Gasoline', mpg:'14/19 mpg', ext:'Onyx Black', int:'Jet Black Leather',
+      features:['Heated & ventilated leather seats','Panoramic sunroof','Bose premium audio','Adaptive cruise control','360° camera','Power retractable running boards','Wireless Apple CarPlay & Android Auto','3rd-row seating'],
+      desc:'Our flagship — a stunning Onyx Black Yukon XL Denali loaded with every premium feature. Three rows of room, a strong 6.2L V8, and a near-new interior.' },
+    { id:'accent', img:'images/accent.jpg', year:2023, make:'Hyundai', model:'Accent',
+      body:'Sedan', price:15490, miles:'26,100', trans:'Automatic', drive:'FWD',
+      engine:'1.5L 4-Cyl', fuel:'Gasoline', mpg:'33/41 mpg', ext:'Polar White', int:'Black Cloth',
+      features:['Apple CarPlay & Android Auto','Backup camera','Bluetooth & USB','Cruise control','Alloy wheels','Keyless entry'],
+      desc:'Clean, low-mileage, and easy on gas — a perfect first car, commuter, or reliable second vehicle. One owner and accident-free.' },
+    { id:'civic', img:'images/civic.jpg', year:2016, make:'Honda', model:'Civic EX-T',
+      body:'Sedan', price:15490, miles:'62,300', trans:'Automatic (CVT)', drive:'FWD',
+      engine:'1.5L Turbo 4-Cyl', fuel:'Gasoline', mpg:'31/40 mpg', ext:'Modern Steel Gray', int:'Black Cloth',
+      features:['1.5L Turbo engine','Power moonroof','Apple CarPlay & Android Auto','Backup camera','Remote start','Push-button start','Alloy wheels','Dual-zone climate'],
+      desc:'The turbocharged EX-T trim with the desirable moonroof and loads of features. Famous Honda reliability with great fuel economy. Freshly serviced.' },
+    { id:'camry', img:'images/camry.jpg', year:2016, make:'Toyota', model:'Camry SE',
+      body:'Sedan', price:14290, miles:'71,800', trans:'6-Speed Auto', drive:'FWD',
+      engine:'2.5L 4-Cyl', fuel:'Gasoline', mpg:'25/35 mpg', ext:'Celestial Silver', int:'Black Sport Cloth',
+      features:['Sport-tuned suspension','Paddle shifters','Touchscreen audio','Backup camera','Dual-zone climate','Alloy wheels','Keyless entry'],
+      desc:'The sporty SE trim of the legendarily dependable Camry. Roomy, comfortable, and built to run for years. One previous owner.' },
+  ];
+
+  const money = n => '$' + Math.round(n).toLocaleString('en-US');
+  const estPay = (price, down, months, apr) => {
+    const r = apr/100/12, p = Math.max(price-down,0);
+    return p<=0 ? 0 : (p*r)/(1-Math.pow(1+r,-months));
+  };
+
+  // Render cars
+  const grid = document.getElementById('carGrid');
+  const veh = document.getElementById('veh');
+  CARS.forEach(c=>{
+    const name = `${c.year} ${c.make} ${c.model}`;
+    const mo = estPay(c.price, Math.round(c.price*0.1), 60, 8);
+    const el = document.createElement('article');
+    el.className='car';
+    el.innerHTML = `
+      <div class="ph">
+        <img src="${c.img}" alt="${name}" loading="lazy" />
+        ${c.featured?'<span class="feat">★ Featured</span>':''}
+        <span class="yr">${c.miles} mi</span>
+      </div>
+      <div class="bd">
+        <h3>${name}</h3>
+        <div class="pr"><span class="p">${money(c.price)}</span><span class="mo">~${money(mo)}/mo est.*</span></div>
+        <div class="sp">
+          <div><div class="n">${c.engine.split(' ')[0]}</div><div class="l">Engine</div></div>
+          <div><div class="n">${c.drive}</div><div class="l">Drive</div></div>
+          <div><div class="n">${c.mpg.split('/')[1]||c.mpg}</div><div class="l">Hwy MPG</div></div>
+        </div>
+        <div class="ax">
+          <button class="btn btn-dark view" data-id="${c.id}">View details</button>
+          <button class="btn btn-outline req" data-car="${name}">Request</button>
+        </div>
+      </div>`;
+    grid.appendChild(el);
+    // dropdown option
+    const o=document.createElement('option'); o.value=name; o.textContent=`${name} — ${money(c.price)}`; veh.appendChild(o);
+  });
+  grid.querySelectorAll('.view').forEach(b=> b.addEventListener('click',()=> openModal(b.dataset.id)));
+  grid.querySelectorAll('.req').forEach(b=> b.addEventListener('click',()=> requestCar(b.dataset.car)));
+
+  function requestCar(name){
+    veh.value = name;
+    document.getElementById('msg').value = `I'd like to request the ${name}. Please hold it for me and let me know the next steps.`;
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>document.getElementById('fn').focus(),550);
+  }
+
+  // Modal
+  const modal=document.getElementById('carModal');
+  function openModal(id){
+    const c=CARS.find(x=>x.id===id); if(!c) return;
+    const name=`${c.year} ${c.make} ${c.model}`;
+    const mo=estPay(c.price, Math.round(c.price*0.1), 60, 8);
+    document.getElementById('mContent').innerHTML=`
+      <img class="mimg" src="${c.img}" alt="${name}" />
+      <div class="mbody">
+        <div class="mhead">
+          <div><h2>${name}</h2><div class="sub">${c.body} · ${c.miles} miles · ${c.ext}</div></div>
+          <div class="price">${money(c.price)}<small>~${money(mo)}/mo est.*</small></div>
+        </div>
+        <div class="mbadges">
+          <span class="mbadge">✓ Carfax: Clean title</span>
+          <span class="mbadge">✓ Inspected &amp; serviced</span>
+          <span class="mbadge alt">No-haggle price</span>
+        </div>
+        <div class="mspecs">
+          <div><div class="n">${c.year}</div><div class="l">Year</div></div>
+          <div><div class="n">${c.miles}</div><div class="l">Mileage</div></div>
+          <div><div class="n">${c.trans}</div><div class="l">Transmission</div></div>
+          <div><div class="n">${c.drive}</div><div class="l">Drivetrain</div></div>
+          <div><div class="n">${c.engine}</div><div class="l">Engine</div></div>
+          <div><div class="n">${c.fuel}</div><div class="l">Fuel</div></div>
+          <div><div class="n">${c.mpg}</div><div class="l">City/Hwy</div></div>
+          <div><div class="n">${c.int}</div><div class="l">Interior</div></div>
+        </div>
+        <p class="mdesc">${c.desc}</p>
+        <div class="mfeat">${c.features.map(f=>`<div><span class="ck">✓</span> ${f}</div>`).join('')}</div>
+        <div style="font-size:.76rem;color:var(--muted);margin-bottom:14px">*Payment is a rough estimate only — we do not offer financing. Price plus tax, title &amp; fees.</div>
+        <div class="mcta">
+          <button class="btn btn-accent" data-car="${name}">Request this car</button>
+          <a class="btn btn-outline" href="tel:+15550000000">Call (555) 000-0000</a>
+        </div>
+      </div>`;
+    document.querySelectorAll('#mContent [data-car]').forEach(b=> b.addEventListener('click',()=>{ closeModal(); requestCar(b.dataset.car); }));
+    modal.classList.add('open'); document.body.style.overflow='hidden';
+  }
+  function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+  document.getElementById('mClose').addEventListener('click',closeModal);
+  modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+  // Service prefill
+  document.querySelectorAll('[data-service]').forEach(b=> b.addEventListener('click',()=>{
+    veh.value='';
+    document.getElementById('msg').value = `I'd like to book: ${b.dataset.service}. My preferred day/time is ____. ${/at-home/i.test(b.dataset.service)?'My pickup address is ____ and the keys will be ____.':''}`.trim();
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+    setTimeout(()=>document.getElementById('fn').focus(),550);
+  }));
+
+  // Estimator
+  const vp=document.getElementById('vp'),dp=document.getElementById('dp'),tm=document.getElementById('tm'),ap=document.getElementById('ap');
+  function calc(){
+    const price=+vp.value,down=+dp.value,months=+tm.value,apr=+ap.value;
+    document.getElementById('vpV').textContent=money(price);
+    document.getElementById('dpV').textContent=money(down);
+    document.getElementById('tmV').textContent=months+' months';
+    document.getElementById('apV').textContent=apr.toFixed(1)+'%';
+    document.getElementById('aprOut').textContent=apr.toFixed(1)+'% APR';
+    document.getElementById('moOut').textContent=money(estPay(price,down,months,apr));
+  }
+  [vp,dp,tm,ap].forEach(s=>s.addEventListener('input',calc)); calc();
+
+  // Forms (mock)
+  function mockSubmit(form, okId){
+    form.addEventListener('submit',e=>{
+      e.preventDefault();
+      const ok=document.getElementById(okId); ok.classList.add('show');
+      ok.scrollIntoView({behavior:'smooth',block:'center'});
+      form.querySelectorAll('input,textarea').forEach(f=>{ if(f.type!=='submit') f.value=''; });
+    });
+  }
+  mockSubmit(document.getElementById('leadForm'),'leadOk');
+  mockSubmit(document.getElementById('sellForm'),'sellOk');
+
+  // Mobile menu
+  document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
+  document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
+
+  document.getElementById('yr').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
