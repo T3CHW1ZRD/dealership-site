@@ -680,7 +680,7 @@
   // Contact form — messages are emailed to you via FormSubmit.co (no backend needed).
   // 👉 Replace the email below with your real inbox to go live. The FIRST time a message
   //    is sent, FormSubmit emails you a one-time activation link — click it once and you're set.
-  const FORM_EMAIL = 'youremail@gmail.com';
+  const FORM_EMAIL = 'amr.alomari.dev@gmail.com';
   const leadForm = document.getElementById('leadForm');
   const leadOk = document.getElementById('leadOk');
   function flashOk(html){ leadOk.innerHTML = html; leadOk.classList.add('show'); leadOk.scrollIntoView({behavior:'smooth',block:'center'}); }
@@ -706,7 +706,7 @@
         flashOk("✓ Thanks! Your message has been sent — we'll be in touch shortly.");
         resetLead();
       } else {
-        flashOk("⚠ Sorry, something went wrong. Please call or email us directly at " + FORM_EMAIL + ".");
+        flashOk("⚠ Sorry, something went wrong. Please call us or try again in a moment.");
       }
     }catch(err){
       flashOk("⚠ Network error — please call or email us directly.");
