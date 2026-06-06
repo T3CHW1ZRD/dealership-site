@@ -482,7 +482,8 @@
           <input type="hidden" id="topic" name="topic" value="General question" />
           <div class="chips" id="topicChips"></div>
         </div>
-        <div class="fg"><label>Message</label><textarea id="msg" name="message" placeholder="I'd like to know if this car is still available…"></textarea></div>
+        <div id="dynFields"></div>
+        <div class="fg"><label>Message</label><textarea id="msg" name="message" placeholder="Anything else we should know?"></textarea></div>
         <button class="btn btn-accent" type="submit" style="width:100%;justify-content:center">Send Message →</button>
         <div class="note">We never sell your info. By submitting you agree to be contacted about your inquiry.</div>
       </form>
@@ -604,24 +605,61 @@
     grid.querySelectorAll('.req').forEach(b=> b.addEventListener('click',()=> requestCar(b.dataset.car)));
   }
 
-  // "What's this about?" intent chips for the single contact form
+  // "What's this about?" intent chips — selecting one reveals the right fields (no fill-in-the-blank)
   const topicChips=document.getElementById('topicChips');
-  function setTopic(value){ topic.value=value; topicChips.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',ch.dataset.value===value)); }
-  ['General question','Buying a car','Booking a service','Selling my car'].forEach(t=>{
+  const dynFields=document.getElementById('dynFields');
+  const TOPICS=['General question','Buying a car','Booking a service','Selling my car'];
+  const SERVICES=['Oil & routine maintenance','Brakes, tires & repairs','Detailing','At-home pickup & return'];
+  const SERVICE_MAP={
+    'Oil change / routine maintenance':'Oil & routine maintenance',
+    'Brakes / tires / repair':'Brakes, tires & repairs',
+    'Car detailing':'Detailing',
+    'At-home pickup & return service':'At-home pickup & return'
+  };
+  const dateTimeRow=()=>`<div class="frow">
+      <div class="fg"><label>Preferred day</label><input type="date" name="preferred_date" /></div>
+      <div class="fg"><label>Preferred time</label><select name="preferred_time"><option value="">—</option><option>Morning</option><option>Afternoon</option><option>Evening</option></select></div>
+    </div>`;
+  function renderFields(t, ctx){
+    ctx=ctx||{}; let h='';
+    if(t==='Buying a car'){
+      const opts=CARS.map(c=>{const n=`${c.year} ${c.make} ${c.model}`;return `<option ${ctx.car===n?'selected':''}>${n}</option>`;}).join('');
+      h=`<div class="fg"><label>Which car?</label><select name="vehicle"><option value="">Choose a car…</option>${opts}</select></div>
+         <div class="fg"><label>I'd like to…</label><select name="request"><option>Check if it's still available</option><option>Reserve / hold it</option><option>Book a test drive</option></select></div>
+         ${dateTimeRow()}`;
+    } else if(t==='Booking a service'){
+      const sopts=SERVICES.map(s=>`<option ${ctx.service===s?'selected':''}>${s}</option>`).join('');
+      h=`<div class="fg"><label>Service needed</label><select name="service" id="dynService">${sopts}</select></div>
+         ${dateTimeRow()}
+         <div id="athomeFields"></div>`;
+    } else if(t==='Selling my car'){
+      h=`<div class="frow">
+           <div class="fg"><label>Your car (year, make, model)</label><input name="your_car" placeholder="2017 Honda Accord" /></div>
+           <div class="fg"><label>Approx. mileage</label><input name="mileage" placeholder="e.g. 80,000" /></div>
+         </div>
+         ${dateTimeRow()}`;
+    }
+    dynFields.innerHTML=h;
+    if(t==='Booking a service'){
+      const sel=document.getElementById('dynService');
+      const toggle=()=>{ document.getElementById('athomeFields').innerHTML = /at-home/i.test(sel.value)
+        ? `<div class="fg"><label>Pickup address</label><input name="pickup_address" placeholder="Street, city" /></div>
+           <div class="fg"><label>Where will the keys be?</label><input name="keys_location" placeholder="With me / under the mat / hand to driver…" /></div>` : ''; };
+      sel.addEventListener('change',toggle); toggle();
+    }
+  }
+  function setTopic(value, ctx){ topic.value=value; topicChips.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',ch.dataset.value===value)); renderFields(value, ctx); }
+  TOPICS.forEach(t=>{
     const b=document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.value=t; b.textContent=t;
     b.addEventListener('click',()=>setTopic(t)); topicChips.appendChild(b);
   });
   setTopic('General question');
-  function fillContact(topicVal,message){
-    setTopic(topicVal);
-    document.getElementById('msg').value = message;
+  function fillContact(topicVal, ctx){
+    setTopic(topicVal, ctx);
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
     setTimeout(()=>document.getElementById('fn').focus(),550);
   }
-
-  function requestCar(name){
-    fillContact('Buying a car', `I'd like to request the ${name}. Please hold it for me and let me know the next steps.`);
-  }
+  function requestCar(name){ fillContact('Buying a car', {car:name}); }
 
   // Modal
   const modal=document.getElementById('carModal');
@@ -674,13 +712,11 @@
   modal.addEventListener('click',e=>{ if(e.target===modal) closeModal(); });
   document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 
-  // Service prefill
+  // Service buttons → open the contact form with that service preselected
   document.querySelectorAll('[data-service]').forEach(b=> b.addEventListener('click',()=>{
-    fillContact('Booking a service', `I'd like to book: ${b.dataset.service}. My preferred day/time is ____. ${/at-home/i.test(b.dataset.service)?'My pickup address is ____ and the keys will be ____.':''}`.trim());
+    fillContact('Booking a service', { service: SERVICE_MAP[b.dataset.service] || b.dataset.service });
   }));
-  document.querySelectorAll('[data-sell]').forEach(b=> b.addEventListener('click',()=>{
-    fillContact('Selling my car', `I'd like to sell my car. It's a ____ (year, make, model) with about ____ miles. I'm available to meet on ____.`);
-  }));
+  document.querySelectorAll('[data-sell]').forEach(b=> b.addEventListener('click',()=> fillContact('Selling my car', {})));
 
   // Estimator
   const vp=document.getElementById('vp'),dp=document.getElementById('dp'),tm=document.getElementById('tm'),ap=document.getElementById('ap');
