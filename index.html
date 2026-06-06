@@ -465,6 +465,7 @@
         <iframe class="map" src="https://www.google.com/maps?q=87+Dickson+Hill+Rd,+Markham,+ON+L3P+3J3&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Little Guys Motors — 87 Dickson Hill Rd, Markham, ON"></iframe>
       </div>
       <form class="formcard" id="leadForm" novalidate>
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" aria-hidden="true" />
         <h3>Send a message</h3>
         <div class="s">Buying, booking a service, or selling your car — one quick message and a real person replies.</div>
         <div class="ok" id="leadOk">✓ Thanks! Your message has been sent — we'll be in touch shortly. <em>(Demo only — not actually delivered yet.)</em></div>
@@ -676,17 +677,42 @@
   }
   [vp,dp,tm,ap].forEach(s=>s.addEventListener('input',calc)); calc();
 
-  // Forms (mock)
-  function mockSubmit(form, okId){
-    form.addEventListener('submit',e=>{
-      e.preventDefault();
-      const ok=document.getElementById(okId); ok.classList.add('show');
-      ok.scrollIntoView({behavior:'smooth',block:'center'});
-      form.querySelectorAll('input,textarea').forEach(f=>{ if(f.type!=='submit') f.value=''; });
-      setTopic('General question');
-    });
-  }
-  mockSubmit(document.getElementById('leadForm'),'leadOk');
+  // Contact form — messages are emailed to you via FormSubmit.co (no backend needed).
+  // 👉 Replace the email below with your real inbox to go live. The FIRST time a message
+  //    is sent, FormSubmit emails you a one-time activation link — click it once and you're set.
+  const FORM_EMAIL = 'youremail@gmail.com';
+  const leadForm = document.getElementById('leadForm');
+  const leadOk = document.getElementById('leadOk');
+  function flashOk(html){ leadOk.innerHTML = html; leadOk.classList.add('show'); leadOk.scrollIntoView({behavior:'smooth',block:'center'}); }
+  function resetLead(){ leadForm.querySelectorAll('input,textarea').forEach(f=>{ if(f.type!=='submit' && f.name!=='_honey') f.value=''; }); setTopic('General question'); }
+  leadForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    // Until a real email is filled in, stay in demo mode so nothing looks broken.
+    if(/^youremail@/.test(FORM_EMAIL)){
+      flashOk("✓ Thanks! Your message has been sent — we'll be in touch shortly. <em>(Demo — add your email to deliver for real.)</em>");
+      resetLead(); return;
+    }
+    const btn = leadForm.querySelector('button[type="submit"]'); const orig = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending…';
+    try{
+      const data = new FormData(leadForm);
+      data.append('_subject', 'New website message — Little Guys Motors');
+      data.append('_template', 'table');
+      const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(FORM_EMAIL), {
+        method:'POST', headers:{'Accept':'application/json'}, body:data
+      });
+      const json = await res.json();
+      if(json.success === 'true' || json.success === true){
+        flashOk("✓ Thanks! Your message has been sent — we'll be in touch shortly.");
+        resetLead();
+      } else {
+        flashOk("⚠ Sorry, something went wrong. Please call or email us directly at " + FORM_EMAIL + ".");
+      }
+    }catch(err){
+      flashOk("⚠ Network error — please call or email us directly.");
+    }
+    btn.disabled = false; btn.textContent = orig;
+  });
 
   // Mobile menu
   document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
