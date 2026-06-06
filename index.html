@@ -163,6 +163,11 @@
   .sell .copy ul{list-style:none;display:grid;gap:10px}
   .sell .copy ul li{display:flex;gap:.6rem;align-items:flex-start}
   .sell .copy ul .i{color:var(--accent);font-weight:800}
+  .sellband{display:flex;align-items:center;justify-content:space-between;gap:26px;flex-wrap:wrap;
+    background:#fff;border:1px solid var(--line);border-radius:18px;padding:30px 32px;box-shadow:var(--shadow)}
+  .sellband h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:800;margin-bottom:8px}
+  .sellband p{color:var(--muted);max-width:62ch}
+  .sellband .btn{flex:0 0 auto}
 
   /* Forms */
   .formcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow)}
@@ -195,8 +200,7 @@
   .irow .l{font-size:.76rem;color:var(--muted)}
   .irow .v{font-weight:600}
   .ph-note{color:var(--accent2)}
-  .map{margin-top:16px;border-radius:12px;height:160px;background:var(--ink);color:#aeb2b7;
-    display:grid;place-items:center;font-size:.86rem}
+  .map{margin-top:16px;border-radius:12px;height:230px;width:100%;border:0;display:block}
 
   /* Footer */
   footer{background:var(--ink);color:#aeb2b7;padding:46px 0 24px}
@@ -329,7 +333,7 @@
   <img class="bg" src="images/gmc.jpg" alt="Black GMC Yukon XL Denali" />
   <div class="wrap">
     <div class="inner">
-      <span class="pin">📍 Your City, ST · Locally owned</span>
+      <span class="pin">📍 Markham, ON · Locally owned</span>
       <h1>Big value from the <span class="o">little guys.</span></h1>
       <p>Quality used cars, hand-picked and inspected, at honest prices. Come see what's on the lot — or let us bring the service to you.</p>
       <div class="hero-actions">
@@ -436,34 +440,14 @@
 
 <!-- SELL YOUR CAR -->
 <section class="sec alt" id="sell">
-  <div class="wrap sell">
-    <div class="copy">
-      <h2>Want to sell your car?</h2>
-      <p>Tell us about it and pick a time that works — we'll meet you, take a quick look, and make a fair, no-obligation offer. Selling or trading, it's an easy conversation.</p>
-      <ul>
-        <li><span class="i">✓</span> A real appraisal from a real person</li>
-        <li><span class="i">✓</span> Meet at the lot or somewhere convenient</li>
-        <li><span class="i">✓</span> No pressure, no obligation to sell</li>
-      </ul>
+  <div class="wrap">
+    <div class="sellband">
+      <div>
+        <h2>Want to sell your car?</h2>
+        <p>Tell us about it and we'll set up a quick meeting — a real appraisal from a real person, and a fair, no-obligation offer. Selling or trading, it's an easy conversation.</p>
+      </div>
+      <a class="btn btn-dark" href="#contact" data-sell>Schedule a meeting →</a>
     </div>
-    <form class="formcard" id="sellForm" novalidate>
-      <h3>Schedule a meeting</h3>
-      <div class="s">Send your details and a time — we'll confirm by phone or email.</div>
-      <div class="ok" id="sellOk">✓ Thanks! We'll reach out to confirm your meeting. <em>(Demo only — not actually sent yet.)</em></div>
-      <div class="frow">
-        <div class="fg"><label>Your name</label><input name="name" placeholder="Jane Doe" required /></div>
-        <div class="fg"><label>Phone</label><input name="phone" placeholder="(555) 555-5555" /></div>
-      </div>
-      <div class="fg"><label>Your car (year, make, model)</label><input name="car" placeholder="2017 Honda Accord, ~80k miles" /></div>
-      <div class="frow">
-        <div class="fg"><label>Preferred date</label><input name="date" type="date" /></div>
-        <div class="fg"><label>Preferred time</label>
-          <select name="time"><option>Morning</option><option>Afternoon</option><option>Evening</option></select>
-        </div>
-      </div>
-      <button class="btn btn-dark" type="submit" style="width:100%;justify-content:center">Request Meeting →</button>
-      <div class="note">No obligation. We'll only use your info to set up the appraisal.</div>
-    </form>
   </div>
 </section>
 
@@ -474,24 +458,24 @@
     <div class="contact-grid">
       <div class="info">
         <div class="anytime">📞 Contact us anytime — call, text, or email. You'll always reach a real person.</div>
-        <div class="irow"><div class="i">📍</div><div><div class="l">Address</div><div class="v">123 Example Ave, Your City, ST 00000 <span class="ph-note">(placeholder)</span></div></div></div>
+        <div class="irow"><div class="i">📍</div><div><div class="l">Address</div><div class="v">620 Alden Rd, Markham, ON L3R 9R7</div></div></div>
         <div class="irow"><div class="i">📞</div><div><div class="l">Phone</div><div class="v"><a href="tel:+15550000000">(555) 000-0000</a> <span class="ph-note">(placeholder)</span></div></div></div>
         <div class="irow"><div class="i">✉️</div><div><div class="l">Email</div><div class="v"><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a> <span class="ph-note">(confirm)</span></div></div></div>
         <div class="irow"><div class="i">🕒</div><div><div class="l">Hours</div><div class="v">Mon–Sat: 9am – 7pm · Sun: By appointment</div></div></div>
-        <div class="map">📍 Google Map embed goes here</div>
+        <iframe class="map" src="https://www.google.com/maps?q=620+Alden+Rd,+Markham,+ON+L3R+9R7&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Little Guys Motors — 620 Alden Rd, Markham, ON"></iframe>
       </div>
       <form class="formcard" id="leadForm" novalidate>
         <h3>Send a message</h3>
-        <div class="s">Questions, requesting a car, or booking a service — drop us a line.</div>
+        <div class="s">Buying, booking a service, or selling your car — one quick message and a real person replies.</div>
         <div class="ok" id="leadOk">✓ Thanks! Your message has been sent — we'll be in touch shortly. <em>(Demo only — not actually delivered yet.)</em></div>
         <div class="frow">
           <div class="fg"><label>Full name</label><input id="fn" name="name" placeholder="Jane Doe" required /></div>
           <div class="fg"><label>Phone</label><input name="phone" placeholder="(555) 555-5555" /></div>
         </div>
         <div class="fg"><label>Email</label><input type="email" name="email" placeholder="you@email.com" required /></div>
-        <div class="fg"><label>Which car? <span style="color:var(--muted);font-weight:500">(optional)</span></label>
-          <input type="hidden" id="veh" name="vehicle" value="" />
-          <div class="chips" id="vehChips"></div>
+        <div class="fg"><label>What's this about?</label>
+          <input type="hidden" id="topic" name="topic" value="General question" />
+          <div class="chips" id="topicChips"></div>
         </div>
         <div class="fg"><label>Message</label><textarea id="msg" name="message" placeholder="I'd like to know if this car is still available…"></textarea></div>
         <button class="btn btn-accent" type="submit" style="width:100%;justify-content:center">Send Message →</button>
@@ -524,7 +508,7 @@
       <div>
         <h4>Contact</h4>
         <ul>
-          <li>123 Example Ave, Your City, ST</li>
+          <li>620 Alden Rd, Markham, ON L3R 9R7</li>
           <li><a href="tel:+15550000000">(555) 000-0000</a></li>
           <li><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a></li>
           <li>Mon–Sat 9am–7pm</li>
@@ -578,7 +562,7 @@
 
   // Render cars
   const grid = document.getElementById('carGrid');
-  const veh = document.getElementById('veh');
+  const topic = document.getElementById('topic');
   CARS.forEach(c=>{
     const name = `${c.year} ${c.make} ${c.model}`;
     const mo = estPay(c.price, Math.round(c.price*0.1), 60, 8);
@@ -608,22 +592,23 @@
   grid.querySelectorAll('.view').forEach(b=> b.addEventListener('click',()=> openModal(b.dataset.id)));
   grid.querySelectorAll('.req').forEach(b=> b.addEventListener('click',()=> requestCar(b.dataset.car)));
 
-  // "Which car?" chips on the contact form
-  const vehChips=document.getElementById('vehChips');
-  function setVeh(value){ veh.value=value; vehChips.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',ch.dataset.value===value)); }
-  function addChip(value,label){
-    const b=document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.value=value; b.textContent=label;
-    b.addEventListener('click',()=>setVeh(value)); vehChips.appendChild(b);
-  }
-  addChip('','General question');
-  CARS.forEach(c=> addChip(`${c.year} ${c.make} ${c.model}`, `${c.make} ${c.model}`));
-  setVeh('');
-
-  function requestCar(name){
-    setVeh(name);
-    document.getElementById('msg').value = `I'd like to request the ${name}. Please hold it for me and let me know the next steps.`;
+  // "What's this about?" intent chips for the single contact form
+  const topicChips=document.getElementById('topicChips');
+  function setTopic(value){ topic.value=value; topicChips.querySelectorAll('.chip').forEach(ch=>ch.classList.toggle('on',ch.dataset.value===value)); }
+  ['General question','Buying a car','Booking a service','Selling my car'].forEach(t=>{
+    const b=document.createElement('button'); b.type='button'; b.className='chip'; b.dataset.value=t; b.textContent=t;
+    b.addEventListener('click',()=>setTopic(t)); topicChips.appendChild(b);
+  });
+  setTopic('General question');
+  function fillContact(topicVal,message){
+    setTopic(topicVal);
+    document.getElementById('msg').value = message;
     document.getElementById('contact').scrollIntoView({behavior:'smooth'});
     setTimeout(()=>document.getElementById('fn').focus(),550);
+  }
+
+  function requestCar(name){
+    fillContact('Buying a car', `I'd like to request the ${name}. Please hold it for me and let me know the next steps.`);
   }
 
   // Modal
@@ -672,10 +657,10 @@
 
   // Service prefill
   document.querySelectorAll('[data-service]').forEach(b=> b.addEventListener('click',()=>{
-    setVeh('');
-    document.getElementById('msg').value = `I'd like to book: ${b.dataset.service}. My preferred day/time is ____. ${/at-home/i.test(b.dataset.service)?'My pickup address is ____ and the keys will be ____.':''}`.trim();
-    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
-    setTimeout(()=>document.getElementById('fn').focus(),550);
+    fillContact('Booking a service', `I'd like to book: ${b.dataset.service}. My preferred day/time is ____. ${/at-home/i.test(b.dataset.service)?'My pickup address is ____ and the keys will be ____.':''}`.trim());
+  }));
+  document.querySelectorAll('[data-sell]').forEach(b=> b.addEventListener('click',()=>{
+    fillContact('Selling my car', `I'd like to sell my car. It's a ____ (year, make, model) with about ____ miles. I'm available to meet on ____.`);
   }));
 
   // Estimator
@@ -698,11 +683,10 @@
       const ok=document.getElementById(okId); ok.classList.add('show');
       ok.scrollIntoView({behavior:'smooth',block:'center'});
       form.querySelectorAll('input,textarea').forEach(f=>{ if(f.type!=='submit') f.value=''; });
-      setVeh('');
+      setTopic('General question');
     });
   }
   mockSubmit(document.getElementById('leadForm'),'leadOk');
-  mockSubmit(document.getElementById('sellForm'),'sellOk');
 
   // Mobile menu
   document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('navLinks').classList.toggle('open'));
@@ -724,8 +708,7 @@
     reveal('.svc-card',true);
     reveal('.conc',false);
     reveal('.est',false);
-    reveal('.sell .copy',false);
-    reveal('.sell .formcard',false);
+    reveal('.sellband',false);
     reveal('.info',false);
     reveal('#contact .formcard',false);
   }
