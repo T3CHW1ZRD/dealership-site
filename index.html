@@ -701,8 +701,7 @@
       const res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(FORM_EMAIL), {
         method:'POST', headers:{'Accept':'application/json'}, body:data
       });
-      const json = await res.json();
-      if(json.success === 'true' || json.success === true){
+      if(res.ok){
         flashOk("✓ Thanks! Your message has been sent — we'll be in touch shortly.");
         resetLead();
       } else {
