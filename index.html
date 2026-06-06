@@ -460,7 +460,7 @@
         <div class="anytime">📞 Contact us anytime — call, text, or email. You'll always reach a real person.</div>
         <div class="irow"><div class="i">📍</div><div><div class="l">Address</div><div class="v">87 Dickson Hill Rd, Markham, ON L3P 3J3</div></div></div>
         <div class="irow"><div class="i">📞</div><div><div class="l">Phone</div><div class="v"><a href="tel:+15550000000">(555) 000-0000</a> <span class="ph-note">(placeholder)</span></div></div></div>
-        <div class="irow"><div class="i">✉️</div><div><div class="l">Email</div><div class="v"><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a> <span class="ph-note">(confirm)</span></div></div></div>
+        <div class="irow"><div class="i">✉️</div><div><div class="l">Email</div><div class="v"><a href="mailto:dealership@mail.com">dealership@mail.com</a></div></div></div>
         <div class="irow"><div class="i">🕒</div><div><div class="l">Hours</div><div class="v">Mon–Sat: 9am – 7pm · Sun: By appointment</div></div></div>
         <iframe class="map" src="https://www.google.com/maps?q=87+Dickson+Hill+Rd,+Markham,+ON+L3P+3J3&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Little Guys Motors — 87 Dickson Hill Rd, Markham, ON"></iframe>
       </div>
@@ -511,7 +511,7 @@
         <ul>
           <li>87 Dickson Hill Rd, Markham, ON L3P 3J3</li>
           <li><a href="tel:+15550000000">(555) 000-0000</a></li>
-          <li><a href="mailto:amr.alomar@gmail.com">amr.alomar@gmail.com</a></li>
+          <li><a href="mailto:dealership@mail.com">dealership@mail.com</a></li>
           <li>Mon–Sat 9am–7pm</li>
         </ul>
       </div>
@@ -680,7 +680,7 @@
   // Contact form — messages are emailed to you via FormSubmit.co (no backend needed).
   // 👉 Replace the email below with your real inbox to go live. The FIRST time a message
   //    is sent, FormSubmit emails you a one-time activation link — click it once and you're set.
-  const FORM_EMAIL = 'amr.alomari.dev@gmail.com';
+  const FORM_EMAIL = atob('YW1yLmFsb21hcmkuZGV2QGdtYWlsLmNvbQ=='); // decoded at runtime so your address isn't plain text in the page source
   const leadForm = document.getElementById('leadForm');
   const leadOk = document.getElementById('leadOk');
   function flashOk(html){ leadOk.innerHTML = html; leadOk.classList.add('show'); leadOk.scrollIntoView({behavior:'smooth',block:'center'}); }
