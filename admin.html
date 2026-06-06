@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Little Guys Motors — Admin</title>
+<style>
+  :root{ --ink:#101113; --line:#e3e3e6; --soft:#f6f6f7; --muted:#6b7280; --accent:#ff5a1f; --accent2:#e2470f;
+    --ok:#177a3e; --okbg:#eafaf0; --okline:#b5e7c6; --err:#b4231b; --errbg:#fdecea; --errline:#f6c9c4; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;color:var(--ink);background:#eef0f3;line-height:1.5}
+  a{color:var(--accent2)}
+  .wrap{max-width:920px;margin:0 auto;padding:20px}
+  .btn{display:inline-flex;align-items:center;gap:.4rem;font:inherit;font-weight:700;font-size:.92rem;cursor:pointer;
+    border:1px solid transparent;border-radius:9px;padding:.6rem 1rem;transition:.14s}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+  .btn-accent{background:var(--accent);color:#fff}.btn-accent:hover:not(:disabled){background:var(--accent2)}
+  .btn-dark{background:var(--ink);color:#fff}.btn-dark:hover:not(:disabled){background:#000}
+  .btn-light{background:#fff;color:var(--ink);border-color:var(--line)}.btn-light:hover:not(:disabled){border-color:var(--ink)}
+  .btn-sm{padding:.35rem .6rem;font-size:.82rem;border-radius:7px}
+  input,textarea{font:inherit;width:100%;border:1px solid var(--line);border-radius:8px;padding:.55rem .65rem;background:#fff}
+  input:focus,textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,90,31,.14)}
+  textarea{resize:vertical;min-height:64px}
+  label.fld{display:block;font-size:.78rem;font-weight:600;color:#44474c}
+  label.fld input,label.fld textarea{margin-top:4px;font-weight:400}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:0 6px 18px rgba(16,17,19,.06)}
+  .muted{color:var(--muted)}
+  .note{background:var(--okbg);border:1px solid var(--okline);color:var(--ok);border-radius:9px;padding:10px 12px;font-size:.86rem}
+  .warn{background:#fff6f2;border:1px solid #ffd9c9;color:var(--accent2);border-radius:9px;padding:10px 12px;font-size:.86rem}
+
+  /* Login */
+  #login{min-height:100vh;display:grid;place-items:center;padding:20px}
+  #login .card{width:100%;max-width:360px;text-align:center}
+  #login h1{font-size:1.3rem;margin-bottom:4px}
+  #login p{font-size:.85rem;color:var(--muted);margin-bottom:18px}
+  #login input{margin-bottom:10px;text-align:center}
+  #loginErr{display:none;color:var(--err);font-size:.85rem;margin-top:8px}
+  .logo{width:48px;height:48px;border-radius:13px;background:var(--ink);display:grid;place-items:center;margin:0 auto 14px}
+
+  /* App */
+  #app{display:none}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+  .top h1{font-size:1.25rem}
+  .top h1 span{color:var(--accent)}
+  .bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .conn{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:8px}
+  .conn .grow{flex:1;min-width:240px}
+  .pill{font-size:.78rem;font-weight:700;padding:.3rem .6rem;border-radius:999px}
+  .pill.on{background:var(--okbg);color:var(--ok);border:1px solid var(--okline)}
+  .pill.off{background:var(--errbg);color:var(--err);border:1px solid var(--errline)}
+  details.help{margin-top:10px;font-size:.85rem}
+  details.help summary{cursor:pointer;font-weight:600;color:var(--accent2)}
+  details.help ol{margin:8px 0 0 18px}details.help li{margin:4px 0}
+  .toolbar{position:sticky;top:0;z-index:5;background:#eef0f3;padding:12px 0;display:flex;gap:10px;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--line);margin-bottom:14px}
+  #status{font-size:.85rem;color:var(--muted)}
+
+  .ecar{margin-bottom:16px}
+  .ecar-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+  .ecar-top .ttl{font-weight:800;font-size:1.05rem}
+  .ecar-top .featured{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;font-weight:700;background:var(--soft);
+    border:1px solid var(--line);padding:.35rem .65rem;border-radius:999px;cursor:pointer}
+  .ecar-top .featured input{width:auto}
+  .ord{display:flex;gap:6px}
+  .fields{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .fields .span2{grid-column:span 2}
+  .fields .span4{grid-column:span 4}
+  .imgs{margin-top:14px}
+  .imgs h4{font-size:.8rem;font-weight:700;color:#44474c;margin-bottom:8px}
+  .thumbs{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+  .thumb{position:relative;width:128px}
+  .thumb img{width:128px;height:90px;object-fit:cover;border-radius:9px;border:1px solid var(--line);display:block}
+  .thumb .x{position:absolute;top:-7px;right:-7px;width:24px;height:24px;border-radius:50%;border:0;background:var(--ink);color:#fff;cursor:pointer;font-size:.9rem;line-height:1}
+  .thumb .primary{display:block;text-align:center;font-size:.72rem;font-weight:700;color:var(--accent2);margin-top:4px}
+  .thumb .mkp{width:100%;margin-top:4px}
+  .thumb .new{position:absolute;top:6px;left:6px;background:var(--accent);color:#fff;font-size:.66rem;font-weight:700;padding:.12rem .4rem;border-radius:5px}
+  #log{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;background:#0e1116;color:#cdd3da;
+    border-radius:10px;padding:14px;margin-top:14px;max-height:240px;overflow:auto;display:none}
+  @media(max-width:640px){ .fields{grid-template-columns:1fr 1fr} .fields .span2,.fields .span4{grid-column:span 2} }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <form class="card" id="loginForm">
+    <div class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M3 13l2-5a3 3 0 0 1 2.8-2h8.4A3 3 0 0 1 19 8l2 5v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-1H6v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-6z" fill="#ff5a1f"/><circle cx="7" cy="15" r="1.3" fill="#fff"/><circle cx="17" cy="15" r="1.3" fill="#fff"/></svg></div>
+    <h1>Little Guys Motors</h1>
+    <p>Admin sign-in</p>
+    <input id="u" placeholder="Username" autocomplete="username" />
+    <input id="p" type="password" placeholder="Password" autocomplete="current-password" />
+    <button class="btn btn-dark" type="submit" style="width:100%;justify-content:center">Unlock</button>
+    <div id="loginErr">Incorrect username or password.</div>
+  </form>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="wrap">
+    <div class="top">
+      <h1>Inventory <span>Admin</span></h1>
+      <div class="bar"><button class="btn btn-light btn-sm" id="logout">Log out</button></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <div class="conn">
+        <label class="fld grow">GitHub access token
+          <input id="token" type="password" placeholder="github_pat_… (paste your token)" autocomplete="off" />
+        </label>
+        <button class="btn btn-dark" id="connect">Connect &amp; load</button>
+        <span class="pill off" id="connState">Not connected</span>
+      </div>
+      <div class="muted" style="font-size:.82rem">Repo: <b id="repoLabel">—</b>. Your token is kept only in this browser tab (never saved to the site).</div>
+      <details class="help">
+        <summary>How do I get a token?</summary>
+        <ol>
+          <li>Go to GitHub → <b>Settings → Developer settings → Personal access tokens → Fine-grained tokens</b> → <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">Generate new token</a>.</li>
+          <li><b>Repository access:</b> Only select repositories → <b>dealership-site</b>.</li>
+          <li><b>Permissions → Repository → Contents:</b> set to <b>Read and write</b>.</li>
+          <li>Pick a short expiration (e.g. 90 days), generate, and paste the token above.</li>
+        </ol>
+      </details>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-light" id="addCar">+ Add a car</button>
+      <button class="btn btn-accent" id="publish" disabled>Publish to site</button>
+      <span id="status">Connect with your token to load the inventory.</span>
+    </div>
+
+    <div id="editor"></div>
+    <pre id="log"></pre>
+  </div>
+</div>
+
+<script>
+  // ===== Config =====
+  const OWNER='T3CHW1ZRD', REPO='dealership-site', BRANCH='main', DATA_PATH='cars.json', IMG_DIR='images';
+  // Login gate = SHA-256 of "username:password" (soft obfuscation, not real security).
+  // To change the login, generate a new hash in the console: await genHash('newuser','newpass')
+  const CRED_HASH='e59e02d3428ffb569b9da50690d92f8d9dc764b7d5b38d69da81422802ca6d42';
+
+  const $=s=>document.querySelector(s);
+  const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const escA=s=>esc(s).replace(/"/g,'&quot;');
+  const b64enc=str=>btoa(unescape(encodeURIComponent(str)));
+  const b64dec=b64=>decodeURIComponent(escape(atob(b64)));
+  async function sha256hex(str){ const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(str)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join(''); }
+  window.genHash=async(u,p)=>{ const h=await sha256hex(u+':'+p); console.log(h); return h; };
+
+  // ===== Login =====
+  if(sessionStorage.getItem('lgm_admin')==='1') showApp();
+  $('#loginForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    if(!crypto.subtle){ $('#loginErr').textContent='Please open this page via the live https:// site to sign in.'; $('#loginErr').style.display='block'; return; }
+    const h=await sha256hex($('#u').value.trim()+':'+$('#p').value);
+    if(h===CRED_HASH){ sessionStorage.setItem('lgm_admin','1'); showApp(); }
+    else { $('#loginErr').style.display='block'; }
+  });
+  $('#logout').addEventListener('click',()=>{ sessionStorage.removeItem('lgm_admin'); sessionStorage.removeItem('lgm_token'); location.reload(); });
+  function showApp(){ $('#login').style.display='none'; $('#app').style.display='block'; $('#repoLabel').textContent=OWNER+'/'+REPO; const t=sessionStorage.getItem('lgm_token'); if(t){ $('#token').value=t; } }
+
+  // ===== State =====
+  let state={ cars:[], dataSha:null };
+  const FIELDS=[['year','Year','number'],['make','Make'],['model','Model'],['price','Price ($)','number'],
+    ['miles','Mileage'],['body','Body type'],['trans','Transmission'],['drive','Drivetrain'],
+    ['engine','Engine'],['fuel','Fuel'],['mpg','MPG (city/hwy)'],['ext','Exterior color'],['int','Interior color']];
+
+  // ===== GitHub API =====
+  const token=()=>sessionStorage.getItem('lgm_token')||'';
+  const ghHeaders=()=>({ 'Authorization':'Bearer '+token(), 'Accept':'application/vnd.github+json', 'X-GitHub-Api-Version':'2022-11-28' });
+  async function getFile(path){
+    const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}&t=${Date.now()}`,{headers:ghHeaders(),cache:'no-store'});
+    if(r.status===404) return null;
+    if(!r.ok) throw new Error(`GET ${path} → ${r.status} ${await r.text()}`);
+    return r.json();
+  }
+  async function putFile(path, contentB64, message, sha){
+    const body={ message, content:contentB64, branch:BRANCH }; if(sha) body.sha=sha;
+    const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,{method:'PUT',headers:ghHeaders(),body:JSON.stringify(body)});
+    if(!r.ok) throw new Error(`PUT ${path} → ${r.status} ${await r.text()}`);
+    return r.json();
+  }
+
+  // ===== Connect & load =====
+  $('#connect').addEventListener('click', connect);
+  async function connect(){
+    const t=$('#token').value.trim();
+    if(!t){ alert('Paste your GitHub token first.'); return; }
+    sessionStorage.setItem('lgm_token',t);
+    setStatus('Loading inventory…');
+    try{
+      const f=await getFile(DATA_PATH);
+      if(!f){ state.cars=[]; state.dataSha=null; }
+      else { state.dataSha=f.sha; const json=JSON.parse(b64dec(f.content.replace(/\n/g,''))); state.cars=(json.cars||[]).map(normalizeCar); }
+      $('#connState').className='pill on'; $('#connState').textContent='Connected';
+      $('#publish').disabled=false;
+      renderEditor();
+      setStatus(`Loaded ${state.cars.length} car(s). Edit, then Publish.`);
+    }catch(err){
+      $('#connState').className='pill off'; $('#connState').textContent='Failed';
+      setStatus('Could not load — check the token has Contents: Read/write on this repo.');
+      logLine('ERROR: '+err.message);
+    }
+  }
+  function normalizeCar(c){ return { ...c, featured:!!c.featured, features:Array.isArray(c.features)?c.features:[], images:(c.images||[]).map(s=> typeof s==='string'?{path:s}:s) }; }
+
+  // ===== Editor render =====
+  const editor=$('#editor');
+  function renderEditor(){
+    editor.innerHTML='';
+    state.cars.forEach((c,i)=>{
+      const card=document.createElement('div'); card.className='card ecar'; card.dataset.i=i;
+      const title=`${c.year||''} ${c.make||''} ${c.model||''}`.trim()||'New car';
+      card.innerHTML=`
+        <div class="ecar-top">
+          <span class="ttl">${esc(title)}</span>
+          <div class="bar">
+            <label class="featured"><input type="radio" name="featured" data-feat="${i}" ${c.featured?'checked':''}/> Featured (hero)</label>
+            <div class="ord">
+              <button class="btn btn-light btn-sm" data-up="${i}" title="Move up">↑</button>
+              <button class="btn btn-light btn-sm" data-down="${i}" title="Move down">↓</button>
+              <button class="btn btn-light btn-sm" data-del="${i}" style="color:var(--err)">Delete</button>
+            </div>
+          </div>
+        </div>
+        <div class="fields">
+          ${FIELDS.map(([k,lbl,t])=>`<label class="fld">${lbl}<input data-field="${k}" type="${t||'text'}" value="${escA(c[k])}" /></label>`).join('')}
+          <label class="fld span4">Features (one per line)<textarea data-field="features">${esc((c.features||[]).join('\n'))}</textarea></label>
+          <label class="fld span4">Description<textarea data-field="desc">${esc(c.desc)}</textarea></label>
+        </div>
+        <div class="imgs">
+          <h4>Photos &nbsp;<span class="muted" style="font-weight:400">(first photo = shown on the card)</span></h4>
+          <div class="thumbs">
+            ${(c.images||[]).map((im,j)=>`
+              <div class="thumb">
+                ${im.isNew?'<span class="new">NEW</span>':''}
+                <img src="${im.path||im.previewUrl}" alt="" />
+                <button class="x" data-rmimg="${i}-${j}" title="Remove">×</button>
+                ${j===0?'<span class="primary">★ Primary</span>':`<button class="btn btn-light btn-sm mkp" data-primary="${i}-${j}">Make primary</button>`}
+              </div>`).join('')}
+            <div class="thumb" style="display:flex;align-items:center;justify-content:center;height:90px;border:1px dashed var(--line);border-radius:9px;cursor:pointer" data-add="${i}">
+              <span class="muted" style="font-size:.82rem">+ Add photos</span>
+            </div>
+          </div>
+          <input type="file" accept="image/*" multiple hidden data-file="${i}" />
+        </div>`;
+      editor.appendChild(card);
+    });
+    wireEditor();
+  }
+
+  function collectFromDOM(){
+    document.querySelectorAll('.ecar').forEach(card=>{
+      const i=+card.dataset.i, c=state.cars[i]; if(!c) return;
+      card.querySelectorAll('[data-field]').forEach(inp=>{
+        const f=inp.dataset.field;
+        if(f==='features') c.features=inp.value.split('\n').map(s=>s.trim()).filter(Boolean);
+        else c[f]=inp.value;
+      });
+    });
+  }
+
+  function wireEditor(){
+    document.querySelectorAll('[data-feat]').forEach(r=> r.addEventListener('change',()=>{ const i=+r.dataset.feat; state.cars.forEach((c,k)=>c.featured=(k===i)); }));
+    document.querySelectorAll('[data-del]').forEach(b=> b.addEventListener('click',()=>{ collectFromDOM(); const i=+b.dataset.del; if(confirm('Delete this car?')){ state.cars.splice(i,1); renderEditor(); } }));
+    document.querySelectorAll('[data-up]').forEach(b=> b.addEventListener('click',()=>{ collectFromDOM(); const i=+b.dataset.up; if(i>0){ [state.cars[i-1],state.cars[i]]=[state.cars[i],state.cars[i-1]]; renderEditor(); } }));
+    document.querySelectorAll('[data-down]').forEach(b=> b.addEventListener('click',()=>{ collectFromDOM(); const i=+b.dataset.down; if(i<state.cars.length-1){ [state.cars[i+1],state.cars[i]]=[state.cars[i],state.cars[i+1]]; renderEditor(); } }));
+    document.querySelectorAll('[data-add]').forEach(d=> d.addEventListener('click',()=>{ document.querySelector(`[data-file="${d.dataset.add}"]`).click(); }));
+    document.querySelectorAll('[data-file]').forEach(inp=> inp.addEventListener('change', async ()=>{
+      collectFromDOM(); const i=+inp.dataset.file;
+      for(const file of inp.files){ try{ state.cars[i].images.push(await fileToImg(file)); }catch(e){ logLine('Image read failed: '+e.message); } }
+      renderEditor();
+    }));
+    document.querySelectorAll('[data-rmimg]').forEach(b=> b.addEventListener('click',()=>{ collectFromDOM(); const [i,j]=b.dataset.rmimg.split('-').map(Number); state.cars[i].images.splice(j,1); renderEditor(); }));
+    document.querySelectorAll('[data-primary]').forEach(b=> b.addEventListener('click',()=>{ collectFromDOM(); const [i,j]=b.dataset.primary.split('-').map(Number); const im=state.cars[i].images.splice(j,1)[0]; state.cars[i].images.unshift(im); renderEditor(); }));
+  }
+
+  function fileToImg(file){ return new Promise((res,rej)=>{ const r=new FileReader();
+    r.onload=()=>{ const dataUrl=r.result; res({ isNew:true, b64:dataUrl.split(',')[1], ext:(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg', previewUrl:dataUrl }); };
+    r.onerror=()=>rej(new Error('read error')); r.readAsDataURL(file); }); }
+
+  // ===== Add car =====
+  $('#addCar').addEventListener('click',()=>{ collectFromDOM(); state.cars.push({ id:'', featured:false, year:'', make:'', model:'', body:'', price:'', miles:'', trans:'', drive:'', engine:'', fuel:'', mpg:'', ext:'', int:'', features:[], desc:'', images:[] }); renderEditor();
+    window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'}); });
+
+  // ===== Publish =====
+  const slug=c=>(`${c.year||''}-${c.make||''}-${c.model||''}`).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'car';
+  $('#publish').addEventListener('click', publish);
+  async function publish(){
+    collectFromDOM();
+    if(!state.cars.length && !confirm('Publish an EMPTY inventory (no cars)?')) return;
+    const btn=$('#publish'); btn.disabled=true; $('#addCar').disabled=true;
+    $('#log').style.display='block'; $('#log').textContent=''; setStatus('Publishing…');
+    try{
+      // unique ids
+      const used=new Set();
+      for(const c of state.cars){ let base=(c.id&&c.id.trim())?c.id.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''):slug(c); let id=base,n=2; while(used.has(id)) id=base+'-'+(n++); used.add(id); c.id=id; }
+      // upload new images
+      for(const c of state.cars){
+        const out=[];
+        for(const im of (c.images||[])){
+          if(im.isNew){
+            const fname=`${IMG_DIR}/${c.id}-${Date.now()}-${Math.floor(Math.random()*10000)}.${im.ext}`;
+            logLine('Uploading '+fname+' …');
+            await putFile(fname, im.b64, 'Add photo '+fname);
+            out.push(fname);
+          } else out.push(im.path);
+        }
+        c._images=out;
+      }
+      // build cars.json
+      const outData={ cars: state.cars.map(c=>({
+        id:c.id, featured:!!c.featured, year:Number(c.year)||c.year, make:c.make, model:c.model, body:c.body,
+        price:Number(c.price)||c.price, miles:c.miles, trans:c.trans, drive:c.drive, engine:c.engine, fuel:c.fuel,
+        mpg:c.mpg, ext:c.ext, int:c.int, images:c._images, features:c.features, desc:c.desc })) };
+      logLine('Saving cars.json …');
+      const res=await putFile(DATA_PATH, b64enc(JSON.stringify(outData,null,2)), 'Update inventory via admin panel', state.dataSha);
+      state.dataSha=res.content.sha;
+      // refresh local images to their published paths
+      state.cars.forEach(c=>{ c.images=(c._images||[]).map(p=>({path:p})); });
+      renderEditor();
+      logLine('Done ✓');
+      setStatus('Published! The live site updates in ~1 minute (hard-refresh to see it).');
+    }catch(err){
+      logLine('ERROR: '+err.message);
+      setStatus('Publish failed — see log below.');
+    }
+    btn.disabled=false; $('#addCar').disabled=false;
+  }
+
+  function setStatus(t){ $('#status').textContent=t; }
+  function logLine(t){ const el=$('#log'); el.style.display='block'; el.textContent+=t+'\n'; el.scrollTop=el.scrollHeight; }
+</script>
+</body>
+</html>

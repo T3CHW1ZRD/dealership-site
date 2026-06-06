@@ -225,6 +225,10 @@
   .mclose{position:absolute;top:12px;right:12px;z-index:5;width:38px;height:38px;border-radius:10px;border:0;
     background:rgba(255,255,255,.92);cursor:pointer;font-size:1.1rem;box-shadow:var(--shadow)}
   .mimg{width:100%;aspect-ratio:16/9;object-fit:cover;background:#ececed}
+  .mthumbs{display:flex;gap:8px;padding:8px 14px 0;background:#fff;overflow-x:auto}
+  .mthumb{width:88px;height:62px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;flex:0 0 auto}
+  .mthumb:hover{border-color:var(--line)}
+  .mthumb.on{border-color:var(--accent)}
   .mbody{padding:22px 24px 24px}
   .mhead{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
   .mhead h2{font-size:1.45rem}
@@ -330,7 +334,7 @@
 
 <!-- HERO -->
 <section class="hero">
-  <img class="bg" src="images/gmc.jpg" alt="Black GMC Yukon XL Denali" />
+  <img class="bg" id="heroBg" src="images/gmc.jpg" alt="Black GMC Yukon XL Denali" />
   <div class="wrap">
     <div class="inner">
       <span class="pin">📍 Markham, ON · Locally owned</span>
@@ -344,7 +348,7 @@
   </div>
   <div class="hero-feat">
     <div class="t">Now featured</div>
-    <div class="v">2021 GMC Yukon XL Denali</div>
+    <div class="v" id="heroFeat">2021 GMC Yukon XL Denali</div>
   </div>
 </section>
 
@@ -532,23 +536,26 @@
 </div>
 
 <script>
-  const CARS = [
-    { id:'gmc', img:'images/gmc.jpg', featured:true, year:2021, make:'GMC', model:'Yukon XL Denali',
+  // Inventory loads from cars.json (editable via admin.html). This embedded copy is a fallback
+  // so the page still renders when opened directly from disk (file://, where fetch is blocked).
+  let CARS = [];
+  const DEFAULT_CARS = [
+    { id:'gmc', featured:true, images:['images/gmc.jpg'], year:2021, make:'GMC', model:'Yukon XL Denali',
       body:'Full-Size SUV', price:54900, miles:'38,400', trans:'10-Speed Auto', drive:'4WD',
       engine:'6.2L V8', fuel:'Gasoline', mpg:'14/19 mpg', ext:'Onyx Black', int:'Jet Black Leather',
       features:['Heated & ventilated leather seats','Panoramic sunroof','Bose premium audio','Adaptive cruise control','360° camera','Power retractable running boards','Wireless Apple CarPlay & Android Auto','3rd-row seating'],
       desc:'Our flagship — a stunning Onyx Black Yukon XL Denali loaded with every premium feature. Three rows of room, a strong 6.2L V8, and a near-new interior.' },
-    { id:'accent', img:'images/accent.jpg', year:2023, make:'Hyundai', model:'Accent',
+    { id:'accent', featured:false, images:['images/accent.jpg'], year:2023, make:'Hyundai', model:'Accent',
       body:'Sedan', price:15490, miles:'26,100', trans:'Automatic', drive:'FWD',
       engine:'1.5L 4-Cyl', fuel:'Gasoline', mpg:'33/41 mpg', ext:'Polar White', int:'Black Cloth',
       features:['Apple CarPlay & Android Auto','Backup camera','Bluetooth & USB','Cruise control','Alloy wheels','Keyless entry'],
       desc:'Clean, low-mileage, and easy on gas — a perfect first car, commuter, or reliable second vehicle. One owner and accident-free.' },
-    { id:'civic', img:'images/civic.jpg', year:2016, make:'Honda', model:'Civic EX-T',
+    { id:'civic', featured:false, images:['images/civic.jpg'], year:2016, make:'Honda', model:'Civic EX-T',
       body:'Sedan', price:15490, miles:'62,300', trans:'Automatic (CVT)', drive:'FWD',
       engine:'1.5L Turbo 4-Cyl', fuel:'Gasoline', mpg:'31/40 mpg', ext:'Modern Steel Gray', int:'Black Cloth',
       features:['1.5L Turbo engine','Power moonroof','Apple CarPlay & Android Auto','Backup camera','Remote start','Push-button start','Alloy wheels','Dual-zone climate'],
       desc:'The turbocharged EX-T trim with the desirable moonroof and loads of features. Famous Honda reliability with great fuel economy. Freshly serviced.' },
-    { id:'camry', img:'images/camry.jpg', year:2016, make:'Toyota', model:'Camry SE',
+    { id:'camry', featured:false, images:['images/camry.jpg'], year:2016, make:'Toyota', model:'Camry SE',
       body:'Sedan', price:14290, miles:'71,800', trans:'6-Speed Auto', drive:'FWD',
       engine:'2.5L 4-Cyl', fuel:'Gasoline', mpg:'25/35 mpg', ext:'Celestial Silver', int:'Black Sport Cloth',
       features:['Sport-tuned suspension','Paddle shifters','Touchscreen audio','Backup camera','Dual-zone climate','Alloy wheels','Keyless entry'],
@@ -561,37 +568,41 @@
     return p<=0 ? 0 : (p*r)/(1-Math.pow(1+r,-months));
   };
 
-  // Render cars
+  // Render cars (called after cars.json loads)
   const grid = document.getElementById('carGrid');
   const topic = document.getElementById('topic');
-  CARS.forEach(c=>{
-    const name = `${c.year} ${c.make} ${c.model}`;
-    const mo = estPay(c.price, Math.round(c.price*0.1), 60, 8);
-    const el = document.createElement('article');
-    el.className='car';
-    el.innerHTML = `
-      <div class="ph">
-        <img src="${c.img}" alt="${name}" loading="lazy" />
-        ${c.featured?'<span class="feat">★ Featured</span>':''}
-        <span class="yr">${c.miles} mi</span>
-      </div>
-      <div class="bd">
-        <h3>${name}</h3>
-        <div class="pr"><span class="p">${money(c.price)}</span><span class="mo">~${money(mo)}/mo est.*</span></div>
-        <div class="sp">
-          <div><div class="n">${c.engine.split(' ')[0]}</div><div class="l">Engine</div></div>
-          <div><div class="n">${c.drive}</div><div class="l">Drive</div></div>
-          <div><div class="n">${c.mpg.split('/')[1]||c.mpg}</div><div class="l">Hwy MPG</div></div>
+  function renderCars(){
+    grid.innerHTML = '';
+    CARS.forEach(c=>{
+      const name = `${c.year} ${c.make} ${c.model}`;
+      const mo = estPay(c.price, Math.round(c.price*0.1), 60, 8);
+      const img = (c.images && c.images[0]) || '';
+      const el = document.createElement('article');
+      el.className='car';
+      el.innerHTML = `
+        <div class="ph">
+          <img src="${img}" alt="${name}" loading="lazy" />
+          ${c.featured?'<span class="feat">★ Featured</span>':''}
+          <span class="yr">${c.miles} mi</span>
         </div>
-        <div class="ax">
-          <button class="btn btn-dark view" data-id="${c.id}">View details</button>
-          <button class="btn btn-outline req" data-car="${name}">Request</button>
-        </div>
-      </div>`;
-    grid.appendChild(el);
-  });
-  grid.querySelectorAll('.view').forEach(b=> b.addEventListener('click',()=> openModal(b.dataset.id)));
-  grid.querySelectorAll('.req').forEach(b=> b.addEventListener('click',()=> requestCar(b.dataset.car)));
+        <div class="bd">
+          <h3>${name}</h3>
+          <div class="pr"><span class="p">${money(c.price)}</span><span class="mo">~${money(mo)}/mo est.*</span></div>
+          <div class="sp">
+            <div><div class="n">${(c.engine||'').split(' ')[0]}</div><div class="l">Engine</div></div>
+            <div><div class="n">${c.drive||''}</div><div class="l">Drive</div></div>
+            <div><div class="n">${(c.mpg||'').split('/')[1]||c.mpg||''}</div><div class="l">Hwy MPG</div></div>
+          </div>
+          <div class="ax">
+            <button class="btn btn-dark view" data-id="${c.id}">View details</button>
+            <button class="btn btn-outline req" data-car="${name}">Request</button>
+          </div>
+        </div>`;
+      grid.appendChild(el);
+    });
+    grid.querySelectorAll('.view').forEach(b=> b.addEventListener('click',()=> openModal(b.dataset.id)));
+    grid.querySelectorAll('.req').forEach(b=> b.addEventListener('click',()=> requestCar(b.dataset.car)));
+  }
 
   // "What's this about?" intent chips for the single contact form
   const topicChips=document.getElementById('topicChips');
@@ -618,8 +629,11 @@
     const c=CARS.find(x=>x.id===id); if(!c) return;
     const name=`${c.year} ${c.make} ${c.model}`;
     const mo=estPay(c.price, Math.round(c.price*0.1), 60, 8);
+    const imgs=(c.images&&c.images.length)?c.images:[''];
+    const gallery = `<img class="mimg" id="mMain" src="${imgs[0]}" alt="${name}" />` +
+      (imgs.length>1 ? `<div class="mthumbs">${imgs.map((s,i)=>`<img class="mthumb${i===0?' on':''}" data-src="${s}" src="${s}" alt="" />`).join('')}</div>` : '');
     document.getElementById('mContent').innerHTML=`
-      <img class="mimg" src="${c.img}" alt="${name}" />
+      ${gallery}
       <div class="mbody">
         <div class="mhead">
           <div><h2>${name}</h2><div class="sub">${c.body} · ${c.miles} miles · ${c.ext}</div></div>
@@ -649,6 +663,10 @@
         </div>
       </div>`;
     document.querySelectorAll('#mContent [data-car]').forEach(b=> b.addEventListener('click',()=>{ closeModal(); requestCar(b.dataset.car); }));
+    document.querySelectorAll('#mContent .mthumb').forEach(t=> t.addEventListener('click',()=>{
+      document.getElementById('mMain').src = t.dataset.src;
+      document.querySelectorAll('#mContent .mthumb').forEach(x=>x.classList.remove('on')); t.classList.add('on');
+    }));
     modal.classList.add('open'); document.body.style.overflow='hidden';
   }
   function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
@@ -718,12 +736,14 @@
   document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open')));
 
   // Scroll-reveal animations (skipped if user prefers reduced motion)
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if(!reduce && 'IntersectionObserver' in window){
+  function setupReveal(){
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(reduce || !('IntersectionObserver' in window)) return;
     const io = new IntersectionObserver((entries)=>{
       entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
     }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
     const reveal = (selector, stagger)=> document.querySelectorAll(selector).forEach((el,i)=>{
+      if(el.classList.contains('reveal')) return;
       el.classList.add('reveal');
       if(stagger) el.style.transitionDelay = (i*0.08)+'s';
       io.observe(el);
@@ -737,6 +757,30 @@
     reveal('.info',false);
     reveal('#contact .formcard',false);
   }
+
+  // Update the hero from whichever car is marked featured
+  function updateHero(){
+    const f = CARS.find(c=>c.featured) || CARS[0];
+    if(!f) return;
+    const bg=document.getElementById('heroBg'), fe=document.getElementById('heroFeat');
+    const name=`${f.year} ${f.make} ${f.model}`;
+    if(bg && f.images && f.images[0]){ bg.src=f.images[0]; bg.alt=name; }
+    if(fe) fe.textContent=name;
+  }
+
+  // Load inventory from cars.json (falls back to the embedded copy for file:// previews)
+  (async function init(){
+    try{
+      const res = await fetch('cars.json?v=' + Date.now(), {cache:'no-store'});
+      if(!res.ok) throw 0;
+      const data = await res.json();
+      CARS = Array.isArray(data) ? data : (data.cars || []);
+    }catch(e){ CARS = DEFAULT_CARS; }
+    if(!CARS.length) CARS = DEFAULT_CARS;
+    renderCars();
+    updateHero();
+    setupReveal();
+  })();
 
   document.getElementById('yr').textContent=new Date().getFullYear();
 </script>
